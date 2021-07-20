@@ -968,6 +968,8 @@ func (j xlMetaV2DeleteMarker) ToFileInfo(volume, path string) (FileInfo, error) 
 		switch {
 		case equals(k, xhttp.AmzBucketReplicationStatus):
 			fi.DeleteMarkerReplicationStatus = string(v)
+		case equals(k, VersionPurgeStatusKeyLegacy):
+			fi.VersionPurgeStatus = VersionPurgeStatusType(string(v))
 		case equals(k, VersionPurgeStatusKey):
 			fi.VersionPurgeStatus = VersionPurgeStatusType(string(v))
 		}
@@ -1050,6 +1052,8 @@ func (j xlMetaV2Object) ToFileInfo(volume, path string) (FileInfo, error) {
 	}
 	for k, v := range j.MetaSys {
 		switch {
+		case equals(k, VersionPurgeStatusKeyLegacy):
+			fi.VersionPurgeStatus = VersionPurgeStatusType(string(v))
 		case equals(k, VersionPurgeStatusKey):
 			fi.VersionPurgeStatus = VersionPurgeStatusType(string(v))
 		case strings.HasPrefix(strings.ToLower(k), ReservedMetadataPrefixLower):
@@ -1207,6 +1211,7 @@ func (z *xlMetaV2) DeleteVersion(fi FileInfo) (string, bool, error) {
 					}
 					delete(z.Versions[i].DeleteMarker.MetaSys, xhttp.AmzBucketReplicationStatus)
 					delete(z.Versions[i].DeleteMarker.MetaSys, VersionPurgeStatusKey)
+					delete(z.Versions[i].DeleteMarker.MetaSys, VersionPurgeStatusKeyLegacy)
 					if fi.DeleteMarkerReplicationStatus != "" {
 						z.Versions[i].DeleteMarker.MetaSys[xhttp.AmzBucketReplicationStatus] = []byte(fi.DeleteMarkerReplicationStatus)
 					}

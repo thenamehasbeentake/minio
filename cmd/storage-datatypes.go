@@ -197,8 +197,11 @@ func (fi *FileInfo) SetInlineData() {
 	fi.Metadata[ReservedMetadataPrefixLower+"inline-data"] = "true"
 }
 
-// VersionPurgeStatusKey denotes purge status in metadata
-const VersionPurgeStatusKey = "purgestatus"
+// VersionPurgeStatusKeyLegacy denotes purge status in metadata
+const (
+	VersionPurgeStatusKeyLegacy = "purgestatus"
+	VersionPurgeStatusKey       = ReservedMetadataPrefixLower + "purgestatus"
+)
 
 // VersionPurgeStatusType represents status of a versioned delete or permanent delete w.r.t bucket replication
 type VersionPurgeStatusType string

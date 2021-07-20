@@ -38,6 +38,12 @@ func (v versionsSorter) sort() {
 	})
 }
 
+func (v versionsSorter) reverse() {
+	sort.Slice(v, func(i, j int) bool {
+		return v[i].ModTime.Before(v[j].ModTime)
+	})
+}
+
 func getFileInfoVersions(xlMetaBuf []byte, volume, path string) (FileInfoVersions, error) {
 	fivs, err := getAllFileInfoVersions(xlMetaBuf, volume, path)
 	if err != nil {
